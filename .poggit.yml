@@ -1,0 +1,9 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/GamerMJay2008/MCPEToDiscord
+build-by-default: true
+branches:
+- master
+projects:
+  MCPEToDiscord:
+    path: ""
+    icon: "icon.png"
+...
