@@ -18,7 +18,7 @@ use pocketmine\event\player\{PlayerJoinEvent,PlayerQuitEvent, PlayerDeathEvent, 
 class Main extends PluginBase implements Listener{
 		
 	public function onEnable(): void {
-		$this->version = "1.4.1";
+		$this->version = "2.0.0";
         $this->saveResource("config.yml");
         $this->saveResource("help.txt");
         $this->cfg = new Config($this->getDataFolder()."config.yml", Config::YAML, []);
