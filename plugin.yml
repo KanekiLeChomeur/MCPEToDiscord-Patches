@@ -1,0 +1,15 @@
+name: MCPEToDiscord
+author: JaxkDev
+version: 1.4.1
+api: 4.0.0
+main: Jack\DiscordMCPE\Main
+
+commands:
+  discord:
+    description: Discord commands use /discord help for all cmds
+    permission: discord.use
+    usage: /discord help
+
+permissions: 
+  discord.use:
+    default: op
