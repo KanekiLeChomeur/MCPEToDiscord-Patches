@@ -1,8 +1,0 @@
----
-branches:
-- master
-projects:
-  MCPE_DISCORD:
-    path: ""
-    icon: "icon.png"
-...
