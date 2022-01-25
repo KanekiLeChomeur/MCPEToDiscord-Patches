@@ -11,10 +11,9 @@
 
 - NiekertDev (Async Tasks) (https://github.com/NiekertDev)
 
-## Whats new in 1.4.1
+## Whats new in 2.0.0
 
-- No more pings for you mister...
-- Banned words list now in config.
+- Plugin Updatet to PM4
 
 ### Known Bugs:
 - No known Bugs at the current time of writing this.
