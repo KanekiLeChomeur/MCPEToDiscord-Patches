@@ -8,6 +8,7 @@
 ## Credits:
 
 - NiekertDev (Async Tasks) (https://github.com/NiekertDev)
+- JaxkDev (Original plugin) (https://github.com/JaxkDev/MCPEToDiscord)
 
 ## Whats new in 2.0.0
 
