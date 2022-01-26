@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/JaxkDev/MCPEToDiscord.svg?branch=master)](https://travis-ci.org/JaxkDev/MCPEToDiscord) [![HitCount](http://hits.dwyl.io/JaxkDev/MCPEToDiscord.svg)](http://hits.dwyl.io/JaxkDev/MCPEToDiscord)
-
-<a href="https://tiny.cc/JaxksDC"><img src="https://discordapp.com/api/guilds/554059221847638040/embed.png" alt="Discord server"/></a>
+<a href="https://discord.gg/RuF5gxRNfQ"><img src="https://discordapp.com/api/guilds/554059221847638040/embed.png" alt="Discord server"/></a>
 
 [![](https://poggit.pmmp.io/shield.state/MCPEToDiscord)](https://poggit.pmmp.io/p/MCPEToDiscord)
 [![](https://poggit.pmmp.io/shield.api/MCPEToDiscord)](https://poggit.pmmp.io/p/MCPEToDiscord)
