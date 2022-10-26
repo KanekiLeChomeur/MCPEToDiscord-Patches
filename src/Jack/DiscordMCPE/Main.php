@@ -86,7 +86,7 @@ class Main extends PluginBase implements Listener{
         }
         if($tmp == true){
             $url = $this->cfg->get("webhook_url");
-            $query = "https://discordapp.com/api/webhooks/";
+            $query = "https://discord.com/api/webhooks/";
             if(substr($url, 0, strlen($query)) == $query) {
                 $this->enabled = true;
                 if($this->cfg->get('other_pluginEnabled?') === true){
