@@ -12,8 +12,8 @@
 
 ## Whats new in 2.2.0
 
-- Now supports Command Logging
-- Updated some function that wasn't updated
+- Now supports Command Logging(Beta)
+- Updated some function that wasn't updated to PM4
 
 ### Known Bugs:
 - No known Bugs at the current time of writing this.
