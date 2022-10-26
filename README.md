@@ -10,7 +10,7 @@
 - NiekertDev (Async Tasks) (https://github.com/NiekertDev)
 - JaxkDev (Original plugin) (https://github.com/JaxkDev/MCPEToDiscord)
 
-## Whats new in 2.2.0
+## Whats new in 2.2.0-Beta
 
 - Now supports Command Logging (Beta)
 - Updated some function that wasn't updated to PM4
