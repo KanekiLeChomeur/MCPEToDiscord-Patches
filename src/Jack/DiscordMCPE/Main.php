@@ -40,7 +40,7 @@ class Main extends PluginBase implements Listener{
             if(isset($oldVal["version"])) unset($oldVal["version"]);
             $this->saveResource("config.yml", true);
             $this->cfg->setAll($oldVal);
-            $this->getLogger()->info("Your config has an old version, updating it to a new one");
+            $this->getLogger()->info("Your config has an old version, updating your config to a new one");
         }
         $this->language = strtolower($this->cfg->get("language"));
         $os = array('english', 'spanish', 'german', 'traditional_chinese', 'simplified_chinese', 'french', 'portuguese');
@@ -341,13 +341,13 @@ class Main extends PluginBase implements Listener{
     public function onCmdProcess(PlayerCommandPreprocessEvent $event){
 
         $player = $event->getPlayer();
-        $msg = $event->getMessage();
+        $message = $event->getMessage();
         $ar = getdate();
         $time = $ar["hours"] . ":" . $ar["minutes"];
-        if($msg[1] !== "/") return;
+        if((!$message[1] == "/")) return;
         if($this->cfg->get("webhook_playerCommand?") !== true) return;
         $format = $this->cfg->get("webhook_playerCommandFormat");
-        $msg = str_replace("{cmd}",$msg, str_replace("{time}",$time, str_replace("{player}",$player->getName(),$format)));
+        $msg = str_replace("{cmd}",$message, str_replace("{time}",$time, str_replace("{player}",$player->getName(),$format)));
 
         $this->sendMessage($msg, $player->getName());
 
