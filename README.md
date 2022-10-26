@@ -20,5 +20,5 @@
 If you have a question contact us or create a issue !
 
 ### Contributors:
-https://github.com/FlxiBoy1313
-https://github.com/KanekiLeChomeur
+- FlxiBoy1313 (https://github.com/FlxiBoy1313)
+- KanekiLeChomeur (https://github.com/KanekiLeChomeur)
