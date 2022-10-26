@@ -22,8 +22,10 @@ class Main extends PluginBase implements Listener{
     private Config $cfg;
 
     public $version = "2.3.0";
+    
+    private $confversion = "1.1.0";
 
-    public $language = "english"; //English by Default. Could Change by choosing another language in the Config
+    public $language = "english";
 
     private $pp = null;
 
@@ -33,6 +35,13 @@ class Main extends PluginBase implements Listener{
         $this->saveResource("config.yml");
         $this->saveResource("help.txt");
         $this->cfg = new Config($this->getDataFolder()."config.yml", Config::YAML);
+        if(!$this->cfg->exists("version") || $this->cfg->get("version") !== $this->confversion){
+            $oldVal = $this->cfg->getAll();
+            if(isset($oldVal["version"])) unset($oldVal["version"]);
+            $this->saveResource("config.yml", true);
+            $this->cfg->setAll($oldVal);
+            $this->getLogger()->info("Your config has an old version, updating it to a new one");
+        }
         $this->language = strtolower($this->cfg->get("language"));
         $os = array('english', 'spanish', 'german', 'traditional_chinese', 'simplified_chinese', 'french', 'portuguese');
         if (in_array($this->language, $os) == false){
