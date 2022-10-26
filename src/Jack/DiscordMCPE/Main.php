@@ -53,7 +53,6 @@ class Main extends PluginBase implements Listener{
         if($this->cfg->get('debug')){
             $this->getLogger()->info($this->responses->get("enabled_debug"));
         }
-        $this->pp = null;
         if($this->cfg->get('pureperms')){
             $this->pp = $this->getServer()->getPluginManager()->getPlugin('PurePerms');
             if($this->pp === null){
@@ -66,7 +65,6 @@ class Main extends PluginBase implements Listener{
                 }
             }
         }
-        $this->f = null;
         if($this->cfg->get('factions')){
             $this->f = $this->getServer()->getPluginManager()->getPlugin('FactionsPro');
             if($this->f == null){
