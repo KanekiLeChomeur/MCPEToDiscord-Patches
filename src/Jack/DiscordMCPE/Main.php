@@ -36,11 +36,7 @@ class Main extends PluginBase implements Listener{
         $this->saveResource("help.txt");
         $this->cfg = new Config($this->getDataFolder()."config.yml", Config::YAML);
         if(!$this->cfg->exists("version") || $this->cfg->get("version") !== $this->confversion){
-            $oldVal = $this->cfg->getAll();
-            if(isset($oldVal["version"])) unset($oldVal["version"]);
-            $this->saveResource("config.yml", true);
-            $this->cfg->setAll($oldVal);
-            $this->getLogger()->info("Your config has an old version, updating your config to a new one");
+            $this->getLogger()->info("Your config has an old version, updating your config to a new one. You might set values");
         }
         $this->language = strtolower($this->cfg->get("language"));
         $os = array('english', 'spanish', 'german', 'traditional_chinese', 'simplified_chinese', 'french', 'portuguese');
