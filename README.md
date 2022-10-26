@@ -12,7 +12,7 @@
 
 ## Whats new in 2.2.0
 
-- Now supports Command Logging(Beta)
+- Now supports Command Logging (Beta)
 - Updated some function that wasn't updated to PM4
 
 ### Known Bugs:
