@@ -1,6 +1,6 @@
 name: MCPEToDiscord
 author: JaxkDev
-version: 2.1.0
+version: 2.2.0-Beta
 api: 4.0.0
 main: Jack\DiscordMCPE\Main
 

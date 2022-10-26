@@ -11,28 +11,44 @@ use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\ConsoleCommandSender;
-use pocketmine\event\player\{PlayerJoinEvent,PlayerQuitEvent, PlayerDeathEvent, PlayerChatEvent};;
+use pocketmine\console\ConsoleCommandSender;
+use pocketmine\event\player\{PlayerJoinEvent,PlayerQuitEvent, PlayerDeathEvent, PlayerChatEvent, PlayerCommandPreprocessEvent};;
 
 
 class Main extends PluginBase implements Listener{
+
+    private Config $responses;
+
+    private Config $cfg;
+
+    public $version = "2.2.0-Beta";
+    
+    private $confversion = "1.1.0";
+
+    public $language = "english";
+
+    private $pp = null;
+
+    private $f = null;
 		
 	public function onEnable(): void {
-		$this->version = "2.0.0";
         $this->saveResource("config.yml");
         $this->saveResource("help.txt");
-        $this->cfg = new Config($this->getDataFolder()."config.yml", Config::YAML, []);
+        $this->cfg = new Config($this->getDataFolder()."config.yml", Config::YAML);
+        if(!$this->cfg->exists("version") || $this->cfg->get("version") !== $this->confversion){
+            $this->getLogger()->info("Your config has an old version, updating your config to a new one. You might set values");
+        }
         $this->language = strtolower($this->cfg->get("language"));
         $os = array('english', 'spanish', 'german', 'traditional_chinese', 'simplified_chinese', 'french', 'portuguese');
-        if (in_array($this->language, $os) == false) {
-            $this->language = 'english';
-        }
+        if (in_array($this->language, $os) == false){
+            $this->language = "english";
+            $this->getLogger()->error("Wrong language put into the config, setting the language to English.");
+        };
 	    $this->saveResource("lang/".$this->language.".yml");
-        $this->responses = new Config($this->getDataFolder()."lang/".$this->language.".yml", Config::YAML, []);
+        $this->responses = new Config($this->getDataFolder()."lang/".$this->language.".yml", Config::YAML);
         if($this->cfg->get('debug')){
             $this->getLogger()->info($this->responses->get("enabled_debug"));
         }
-        $this->pp = null;
         if($this->cfg->get('pureperms')){
             $this->pp = $this->getServer()->getPluginManager()->getPlugin('PurePerms');
             if($this->pp === null){
@@ -45,7 +61,6 @@ class Main extends PluginBase implements Listener{
                 }
             }
         }
-        $this->f = null;
         if($this->cfg->get('factions')){
             $this->f = $this->getServer()->getPluginManager()->getPlugin('FactionsPro');
             if($this->f == null){
@@ -67,7 +82,7 @@ class Main extends PluginBase implements Listener{
         }
         if($tmp == true){
             $url = $this->cfg->get("webhook_url");
-            $query = "https://discordapp.com/api/webhooks/";
+            $query = "https://discord.com/api/webhooks/";
             if(substr($url, 0, strlen($query)) == $query) {
                 $this->enabled = true;
                 if($this->cfg->get('other_pluginEnabled?') === true){
@@ -102,7 +117,7 @@ class Main extends PluginBase implements Listener{
     public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args): bool{
         if($cmd->getName() == "discord"){
         if(!isset($args[0])){
-			//$sender->sendMessage(C::RED.$this->responses->get('invalid_command'));
+			$sender->sendMessage(C::RED.$this->responses->get('invalid_command'));
             return false;
 	    }
 	    switch($args[0]){
@@ -319,19 +334,34 @@ class Main extends PluginBase implements Listener{
         $this->sendMessage($msg, $playername);
     }
 
+    public function onCmdProcess(PlayerCommandPreprocessEvent $event){
+
+        $player = $event->getPlayer();
+        $message = $event->getMessage();
+        $ar = getdate();
+        $time = $ar["hours"] . ":" . $ar["minutes"];
+        if((!$message[1] == "/")) return;
+        if($this->cfg->get("webhook_playerCommand?") !== true) return;
+        $format = $this->cfg->get("webhook_playerCommandFormat");
+        $msg = str_replace("{cmd}",$message, str_replace("{time}",$time, str_replace("{player}",$player->getName(),$format)));
+
+        $this->sendMessage($msg, $player->getName());
+
+
+    }
+
     public function backFromAsync($player, $result){
         if($player === "nolog"){
             return;
         }
         elseif ($player === "CONSOLE"){
-            $player = new ConsoleCommandSender();
+            $player = new ConsoleCommandSender($this->getServer(), $this->getServer()->getLanguage());
         }
         else{
             $playerinstance = $this->getServer()->getPlayerExact($player);
-            if ($playerinstance === null){
+            if (!($playerinstance instanceof Player)){
                 return;
-            }
-            else{
+            }else{
                 $player = $playerinstance;
             }
         }
