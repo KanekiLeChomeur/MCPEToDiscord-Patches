@@ -21,7 +21,7 @@ class Main extends PluginBase implements Listener{
 
     private Config $cfg;
 
-    public $version = "2.2.0";
+    public $version = "2.2.0-Beta";
     
     private $confversion = "1.1.0";
 
