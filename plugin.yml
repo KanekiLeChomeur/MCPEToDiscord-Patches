@@ -1,15 +1,16 @@
 name: MCPEToDiscord
 author: JaxkDev
-version: 2.2.0-Beta
+version: 2.2.1-Beta
 api: 4.0.0
-main: Jack\DiscordMCPE\Main
+main: Jack\MCPEToDiscord\Main
 
 commands:
-  discord:
-    description: Discord commands use /discord help for all cmds
-    permission: discord.use
-    usage: /discord help
+  mcpe:
+    description: Discord commands use /mcpe help for all cmds
+    permission: mcpetodiscord.use
+    usage: /mcpe help
+    aliases: ["mcpetodiscord"]
 
 permissions: 
-  discord.use:
+  mcpetodiscord.use:
     default: op
