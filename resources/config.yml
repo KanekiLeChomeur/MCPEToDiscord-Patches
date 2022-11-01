@@ -24,7 +24,7 @@ factions: false
 banned_list:
 - '@here'
 - '@everyone'
-webhook_url: "https://discordapp.com/api/webhooks/"
+webhook_url: "https://discord.com/api/webhooks/"
 webhook_name: "MCPE Webhook"
 webhook_playerChat?: true
 webhook_playerJoin?: true
