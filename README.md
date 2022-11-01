@@ -16,6 +16,8 @@ MCPEToDiscord is a plugin to log messages, commands executed and players who Joi
 - Updated Command Logging
 - Bug Fix
 
+To see changelogs, check it <a href="https://github.com/KanekiLeChomeur/MCPEToDiscord-Patches/blob/master/changelogs.md" alt="Changelogs">here</a>
+
 
 ### Known Bugs:
 - No known Bugs at the current time of writing this.
