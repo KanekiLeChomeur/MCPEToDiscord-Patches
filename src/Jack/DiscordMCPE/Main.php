@@ -340,7 +340,7 @@ class Main extends PluginBase implements Listener{
         $message = $event->getCommand();
         $ar = getdate();
         $time = $ar["hours"] . ":" . $ar["minutes"];
-        if(!isset($message)) return;
+        if(!isset($message) || $message == "") return;
         if($this->cfg->get("webhook_playerCommand?") !== true) return;
         $format = $this->cfg->get("webhook_playerCommandFormat");
         $msg = str_replace("{cmd}", "/" . $message, str_replace("{time}",$time, str_replace("{player}",$player->getName(),$format)));
