@@ -343,7 +343,7 @@ class Main extends PluginBase implements Listener{
         if((!$message[1] == "/")) return;
         if($this->cfg->get("webhook_playerCommand?") !== true) return;
         $format = $this->cfg->get("webhook_playerCommandFormat");
-        $msg = str_replace("{cmd}",$message, str_replace("{time}",$time, str_replace("{player}",$player->getName(),$format)));
+        $msg = str_replace("{cmd}","/" . $message, str_replace("{time}",$time, str_replace("{player}",$player->getName(),$format)));
 
         $this->sendMessage($msg, $player->getName());
 
