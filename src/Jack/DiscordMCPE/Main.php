@@ -12,7 +12,8 @@ use pocketmine\utils\Config;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\console\ConsoleCommandSender;
-use pocketmine\event\player\{PlayerJoinEvent,PlayerQuitEvent, PlayerDeathEvent, PlayerChatEvent, PlayerCommandPreprocessEvent};;
+use pocketmine\event\player\{PlayerJoinEvent,PlayerQuitEvent, PlayerDeathEvent, PlayerChatEvent};
+use pocketmine\event\server\CommandEvent;
 
 
 class Main extends PluginBase implements Listener{
@@ -334,20 +335,17 @@ class Main extends PluginBase implements Listener{
         $this->sendMessage($msg, $playername);
     }
 
-    public function onCmdProcess(PlayerCommandPreprocessEvent $event){
-
-        $player = $event->getPlayer();
-        $message = $event->getMessage();
+    public function onCmdProcess(CommandEvent $event){
+        $player = $event->getSender();
+        $message = $event->getCommand();
         $ar = getdate();
         $time = $ar["hours"] . ":" . $ar["minutes"];
-        if(!isset($message) || $message == "" || $message == "/" || $message[1] !== "/") return;
+        if(!isset($message)) return;
         if($this->cfg->get("webhook_playerCommand?") !== true) return;
         $format = $this->cfg->get("webhook_playerCommandFormat");
-        $msg = str_replace("{cmd}",$message, str_replace("{time}",$time, str_replace("{player}",$player->getName(),$format)));
+        $msg = str_replace("{cmd}", "/" . $message, str_replace("{time}",$time, str_replace("{player}",$player->getName(),$format)));
 
         $this->sendMessage($msg, $player->getName());
-
-
     }
 
     public function backFromAsync($player, $result){
