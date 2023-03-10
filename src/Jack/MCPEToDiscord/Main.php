@@ -5,7 +5,6 @@ namespace Jack\MCPEToDiscord;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\utils\TextFormat as C;
-
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\Config;
@@ -22,7 +21,9 @@ class Main extends PluginBase implements Listener{
 
     private Config $cfg;
 
-    public $version = "2.2.1-Beta";
+    private $enabled;
+
+    public $version = "2.3.0";
     
     private $confversion = "1.1.0";
 
@@ -121,6 +122,10 @@ class Main extends PluginBase implements Listener{
 			$sender->sendMessage(C::RED.$this->responses->get('invalid_command'));
             return false;
 	    }
+        if(!$sender->hasPermission("mcpetodiscord.use")){
+            $sender->sendMessage("T");
+            return false;
+        }
 	    switch($args[0]){
 			case 'version':
 			case 'ver':
@@ -128,11 +133,13 @@ class Main extends PluginBase implements Listener{
 					$this->getLogger()->info(C::GOLD."=== DETAILS ===");
 					$this->getLogger()->info(C::GREEN."Name     ".C::GOLD.":: ".C::AQUA."MCPEToDiscord");
 					$this->getLogger()->info(C::GREEN."Version  ".C::GOLD.":: ".C::AQUA.$this->version);
+                    $this->getLogger()->info(C::GREEN."API      ".C::GOLD.":: ".C::AQUA."5.0.0");
 					$this->getLogger()->info(C::GOLD.$this->responses->get('info_note'));
 					$sender->sendMessage(C::GOLD.$this->responses->get('debug_info_response'));
 					break;
 				} else {
-					$sender->sendMessage("Versoon - ".$this->version);
+					$sender->sendMessage("Version - ".$this->version);
+                    $sender->sendMessage("MCPEToDiscord for API 5.0.0");
 					break;
 				}
 				break;
@@ -210,7 +217,7 @@ class Main extends PluginBase implements Listener{
                     break;
     
                 case 'credits':
-                    $sender->sendMessage("§7-- §9MCPEToDiscord Credits §7--\n§bNiekertDev (AsyncTasks)\n§7-- §9MCPEToDiscord Credits §7--");
+                    $sender->sendMessage("§7-- §9MCPEToDiscord Credits §7--\n§bGamerMJay (Author)\n§bJaxkDev (Original Plugin)\n§bNiekertDev (AsyncTasks)\n§7-- §9MCPEToDiscord Credits §7--");
                     break;
 
             default:
