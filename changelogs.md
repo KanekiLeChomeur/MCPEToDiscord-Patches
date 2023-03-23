@@ -1,6 +1,7 @@
 ## 2.2.2-Beta
 
 - Lag Fix
+- New Sub-Command **reload** used to refresh config and Language output
 
 ## 2.2.1-Beta
 
