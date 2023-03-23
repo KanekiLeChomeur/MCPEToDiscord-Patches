@@ -1,3 +1,7 @@
+## 2.2.2-Beta
+
+- Lag Fix
+
 ## 2.2.1-Beta
 
 - Updated Command Logging
