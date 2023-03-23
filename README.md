@@ -8,7 +8,7 @@ MCPEToDiscord is a plugin to log messages, commands executed and players who Joi
 
 ## Credits:
 
-- NiekertDev (Async Tasks) (https://github.com/NiekertDev)
+- <img src="https://avatars.githubusercontent.com/u/25668874" alt="NierkertDev" height="100" width="100">NiekertDev (Async Tasks) (https://github.com/NiekertDev)
 - JaxkDev (Original plugin) (https://github.com/JaxkDev/MCPEToDiscord)
 
 ## What's new in 2.2.1-Beta
