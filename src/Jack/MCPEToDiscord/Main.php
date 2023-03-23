@@ -26,7 +26,7 @@ class Main extends PluginBase implements Listener{
 
     protected array $responsesdata;
 
-    protected $version = "2.2.1-Beta";
+    protected $version = "2.2.2-Beta";
     
     protected $confversion = "1.1.0";
 
