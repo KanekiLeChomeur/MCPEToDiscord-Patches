@@ -5,16 +5,16 @@ namespace Jack\MCPEToDiscord;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\utils\TextFormat as C;
-
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\command\defaults\VersionCommand;
 use pocketmine\console\ConsoleCommandSender;
 use pocketmine\event\player\{PlayerJoinEvent,PlayerQuitEvent, PlayerDeathEvent, PlayerChatEvent};
 use pocketmine\event\server\CommandEvent;
-
+use pocketmine\VersionInfo;
 
 class Main extends PluginBase implements Listener{
 
@@ -26,13 +26,13 @@ class Main extends PluginBase implements Listener{
 
     protected array $responsesdata;
 
-    protected $version = "2.2.2-Beta";
+    protected bool $enabled;
+
+    protected string $version;
     
-    protected $confversion = "1.1.0";
+    protected string $confversion = "1.1.0";
 
     public $language = "english";
-
-    protected bool $enabled;
 
     private $pp = null;
 
@@ -41,9 +41,10 @@ class Main extends PluginBase implements Listener{
 	public function onEnable(): void {
         $this->saveResource("config.yml");
         $this->saveResource("help.txt");
+        $this->version = $this->getDescription()->getVersion();
         $this->cfg = new Config($this->getDataFolder()."config.yml", Config::YAML);
         if(!$this->cfg->exists("version") || $this->cfg->get("version") !== $this->confversion){
-            $this->getLogger()->info("Your config has an old version, updating your config to a new one. You might set values again");
+            $this->getLogger()->info("Your config has an old version, updating your config to a new one. You might set values");
         }
         $this->cfgdata = $this->cfg->getAll();
         $this->language = strtolower($this->cfg->get("language"));
@@ -54,10 +55,10 @@ class Main extends PluginBase implements Listener{
         };
 	    $this->saveResource("lang/".$this->language.".yml");
         $this->responses = new Config($this->getDataFolder()."lang/".$this->language.".yml", Config::YAML);
-        $this->responsesdata = $this->responses->getAll();
         if($this->cfg->get('debug')){
             $this->getLogger()->info($this->responses->get("enabled_debug"));
         }
+        $this->responsesdata = $this->responses->getAll();
         if($this->cfg->get('pureperms')){
             $this->pp = $this->getServer()->getPluginManager()->getPlugin('PurePerms');
             if($this->pp === null){
@@ -102,7 +103,7 @@ class Main extends PluginBase implements Listener{
                 $this->getLogger()->warning($this->responses->get('enabled_incomplete'));
 		        return;
             }
-        } 
+        }
         $this->getLogger()->warning($this->responses->get('disabled_config'));
         return;
 	}
@@ -129,36 +130,42 @@ class Main extends PluginBase implements Listener{
 			$sender->sendMessage(C::RED.$this->responsesdata['invalid_command']);
             return false;
 	    }
+        if(!$sender->hasPermission("mcpetodiscord.use")){
+            $sender->sendMessage("T");
+            return false;
+        }
 	    switch($args[0]){
 			case 'version':
 			case 'ver':
-				if($this->cfgdata['debug']){
+				if($this->cfg->get('debug')){
 					$this->getLogger()->info(C::GOLD."=== DETAILS ===");
-					$this->getLogger()->info(C::GREEN . "Name     " . C::GOLD . ":: " . C::AQUA . "MCPEToDiscord");
-					$this->getLogger()->info(C::GREEN . "Version  " . C::GOLD . ":: " . C::AQUA.$this->version);
-					$this->getLogger()->info(C::GOLD . $this->responsesdata['info_note']);
-					$sender->sendMessage(C::GOLD . $this->responsesdata['debug_info_response']);
+					$this->getLogger()->info(C::GREEN."Name     ".C::GOLD.":: ".C::AQUA."MCPEToDiscord");
+					$this->getLogger()->info(C::GREEN."Version  ".C::GOLD.":: ".C::AQUA.$this->version);
+                    $this->getLogger()->info(C::GREEN."PMMP API ".C::GOLD.":: ".C::AQUA. VersionInfo::VERSION()->getBaseVersion());
+					$this->getLogger()->info(C::GOLD.$this->responsesdata['info_note']);
+					$sender->sendMessage(C::GOLD.$this->responsesdata['debug_info_response']);
 					break;
 				} else {
-					$sender->sendMessage("Version - " . $this->version);
+					$sender->sendMessage("Version - ".$this->version);
+                    $sender->sendMessage("MCPEToDiscord for PMMP API " . VersionInfo::VERSION()->getBaseVersion());
 					break;
 				}
 				break;
 			case 'on':
 		    case 'enable':
 				if($this->enabled){
-					$sender->sendMessage(C::RED . $this->responsesdata['already_enabled']);
+					$sender->sendMessage(C::RED.$this->responsesdata['already_enabled']);
 					break;
 				}
 				$this->enabled = true;
 				$this->cfg->set('discord', true);
 				$this->cfg->save(true);
-				$sender->sendMessage(C::GREEN . $this->responsesdata['now_enabled']);
+				$sender->sendMessage(C::GREEN.$this->responsesdata['now_enabled']);
 				break;
 			case 'disable':
 			case 'off':
 				if(!$this->enabled){
-					$sender->sendMessage(C::RED . $this->responsesdata['already_disabled']);
+					$sender->sendMessage(C::RED.$this->responsesdata['already_disabled']);
 					break;
 				}
 				$this->enabled = false;
@@ -172,35 +179,35 @@ class Main extends PluginBase implements Listener{
                     break;
                 }
                 if(!isset($args[1])) {
-                    $sender->sendMessage(C::RED . $this->responsesdata["args_missing"]);
+                    $sender->sendMessage(C::RED.$this->responsesdata["args_missing"]);
                     break;
                 }
                 if(!$sender instanceof Player){
-                    $sender->sendMessage(C::RED . $this->responsesdata["ingame"]);
+                    $sender->sendMessage(C::RED.$this->responsesdata["ingame"]);
                     break;
                 }else{
                     $name = $sender->getName();
                     if($this->enabled == false){ 
-                        $sender->sendMessage(C::RED . $this->responsesdata["command_disabled"]);
+                        $sender->sendMessage(C::RED.$this->responses->get["command_disabled"]);
                     break;
                     } else {
-                    $this->sendMessage("[" . $sender->getNameTag() . "] : " . str_replace($args[0] . " ", "", implode(" ", $args)), $name);
+                    $this->sendMessage("[".$sender->getNameTag()."] : ".str_replace($args[0]." ", "",implode(" ", $args)), $name);
                     $sender->sendMessage(C::AQUA.$this->responsesdata["send_success"]);
                     }
                 }
                 break;
 		    case 'setlang':
                 if(!isset($args[1])){
-                    $sender->sendMessage(C::RED . $this->responsesdata["no_language"] . "\n- English\n- Spanish\n- German\n- Simplified_Chinese\n- Traditional_Chinese\n- French\n- Portuguese");
+                    $sender->sendMessage(C::RED.$this->responsesdata["no_language"] . "\n- English\n- Spanish\n- German\n- Simplified_Chinese\n- Traditional_Chinese\n- French\n- Portuguese");
                     break;
                 } else {
-                    $lang = array('english', 'spanish', 'german', 'traditional_chinese', 'simplified_chinese', 'french', 'portuguese');
-                        if (in_array(strtolower($args[1]), $lang) == false) {
-                            $sender->sendMessage(C::RED . $this->responsesdata["invalid_language"]);
+                    $os = array('english', 'spanish', 'german', 'traditional_chinese', 'simplified_chinese', 'french', 'portuguese');
+                        if (in_array(strtolower($args[1]), $os) == false) {
+                            $sender->sendMessage(C::RED.$this->responsesdata["invalid_language"]);
                     break;
                         }
                     if($this->language == strtolower($args[1])){
-                    $sender->sendMessage(C::RED . $this->responsesdata["language_already"] . $args[1]);
+                    $sender->sendMessage(C::RED.$this->responsesdata["language_already"].$args[1]);
                     break;
                     }
                     $this->language = strtolower($args[1]);
@@ -208,25 +215,24 @@ class Main extends PluginBase implements Listener{
                     $this->responses = new Config($this->getDataFolder()."lang/".$this->language.".yml", Config::YAML, []);
                     $this->cfg->set('language', strtolower($args[1]));
                     $this->cfg->save(true);
-                    $this->responsesdata = $this->responses->getAll();
                     $this->cfgdata = $this->cfg->getAll();
+                    $this->responsesdata = $this->responses->getAll();
                     $sender->sendMessage(C::GREEN.$this->responsesdata["success"]);
                     break;
                 }
                 break;
                 
                 case 'help':
-                    $sender->sendMessage("§7-- §9MCPEToDiscord §7--\n§8- §b/mcpe send\n§8- §b/mcpe setlang\n§8- §b/mcpe on/off\n§8- §b/mcpe reload\n§8- §b/mcpe help\n§8- §b/mcpe credits\n§7-- §9MCPEToDiscord §7--");
+                    $sender->sendMessage("§7-- §9MCPEToDiscord §7--\n§8- §b/mcpe send\n§8- §b/mcpe setlang\n§8- §b/mcpe on/off\n§8- §b/mcpe help\n§8- §b/mcpe credits\n§7-- §9MCPEToDiscord §7--");
                     break;
     
                 case 'credits':
-                    $sender->sendMessage("§7-- §9MCPEToDiscord Credits §7--\n§bNiekertDev (AsyncTasks)\n§7-- §9MCPEToDiscord Credits §7--");
+                    $sender->sendMessage("§7-- §9MCPEToDiscord Credits §7--\n§bGamerMJay (Author)\n§bJaxkDev (Original Plugin)\n§bNiekertDev (AsyncTasks)\n§7-- §9MCPEToDiscord Credits §7--");
                     break;
                 case 'reload':
-                    $this->cfgdata = $this->cfg->getAll();
                     $this->responsesdata = $this->responses->getAll();
-                    $sender->sendMessage(C::GREEN . "Config and Language output successfully reloaded");
-                    break;
+                    $this->cfgdata = $this->cfg->getAll();
+                    $sender->sendMessage(C::GREEN . "Config and Language output successfully reloaded.");
 
             default:
                 $sender->sendMessage(C::RED.$this->responsesdata["invalid_command"]);
@@ -241,11 +247,11 @@ class Main extends PluginBase implements Listener{
      */
 	public function onJoin(PlayerJoinEvent $event){
         $playername = $event->getPlayer()->getName(); //START HERE AND FIX THIS *****
-        if($this->cfgdata["webhook_playerJoin?"] !== true){
+        if($this->cfg->get("webhook_playerJoin?") !== true){
             return;
         }
         $format = $this->cfgdata["webhook_playerJoinFormat"];
-        $msg = str_replace("{player}", $playername, $format);
+        $msg = str_replace("{player}",$playername,$format);
         if(!is_null($this->pp)){
             $tmp = $this->pp->getUserDataMgr()->getGroup($event->getPlayer());
             $msg = str_replace("{group}", $tmp->getName(), $msg);
@@ -272,7 +278,7 @@ class Main extends PluginBase implements Listener{
             return;
         }
         $format = $this->cfgdata["webhook_playerLeaveFormat"];
-        $msg = str_replace("{player}", $playername, $format);
+        $msg = str_replace("{player}",$playername,$format);
         if(!is_null($this->pp)){
             $tmp = $this->pp->getUserDataMgr()->getGroup($event->getPlayer());
             $msg = str_replace("{group}", $tmp->getName(), $msg);
@@ -299,7 +305,7 @@ class Main extends PluginBase implements Listener{
             return;
         }
         $format = $this->cfgdata["webhook_playerDeathFormat"];
-        $msg = str_replace("{player}", $playername, $format);
+        $msg = str_replace("{player}",$playername,$format);
         if(!is_null($this->pp)){
             $tmp = $this->pp->getUserDataMgr()->getGroup($event->getPlayer());
             $msg = str_replace("{group}", $tmp->getName(), $msg);
@@ -357,8 +363,8 @@ class Main extends PluginBase implements Listener{
         $time = $ar["hours"] . ":" . $ar["minutes"];
         if(!isset($message) || $message == "") return;
         if($this->cfgdata["webhook_playerCommand?"] !== true) return;
-        $format = $this->cfgdata["webhook_playerCommandFormat"];
-        $msg = str_replace("{cmd}", "/" . $message, str_replace("{time}", $time, str_replace("{player}", $player->getName(), $format)));
+        $format = $this->cfg->get("webhook_playerCommandFormat");
+        $msg = str_replace("{cmd}", "/" . $message, str_replace("{time}",$time, str_replace("{player}",$player->getName(),$format)));
 
         $this->sendMessage($msg, $player->getName());
     }
@@ -400,12 +406,12 @@ class Main extends PluginBase implements Listener{
         $webhook = $this->cfgdata["webhook_url"];
 		$cleanMsg = $this->cleanMessage($msg);
         $curlopts = [
-	    	"content" => $cleanMsg,
+	    "content" => $cleanMsg,
             "username" => $name
         ];
 
         if($cleanMsg === ""){
-            $this->getLogger()->warning(C::RED . "Warning: Empty message cannot be sent to discord.");
+            $this->getLogger()->warning(C::RED."Warning: Empty message cannot be sent to discord.");
             return;
         }
 
