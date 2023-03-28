@@ -13,10 +13,9 @@ MCPEToDiscord is a plugin to log messages, commands executed and players who Joi
 - <img src="https://avatars.githubusercontent.com/u/66413999" alt="GamerMJay" height="13" width="13" style="border-radius:50%;"> GamerMJay (New Author) (https://github.com/GamerMJay)
 - <img src="https://avatars.githubusercontent.com/u/52374013" alt="KanekiLeChomeur" height="13" width="13" style="border-radius:50%;"> KanekiLeChomeur(Contributor) (https://github.com/KanekiLeChomeur)
 
-## What's new in 2.2.2-Beta
+## What's new in 2.3.1
 
-- Lag Fix
-- New Sub-Command **reload** used to refresh config and Language output
+- Applied 2.2.2-Beta Patches to PM5 branch and bumping version to 2.3.1
 
 To see changelogs, check it <a href="https://github.com/KanekiLeChomeur/MCPEToDiscord-Patches/blob/master/changelogs.md" alt="Changelogs">here</a>
 
