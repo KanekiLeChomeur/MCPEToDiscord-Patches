@@ -21,8 +21,7 @@ class Main extends PluginBase implements Listener{
     private Config $responses;
 
     private Config $cfg;
-
-<<<<<<< PM5-1
+	
     protected array $cfgdata;
 
     protected array $responsesdata;
@@ -30,11 +29,6 @@ class Main extends PluginBase implements Listener{
     protected bool $enabled;
 
     protected string $version;
-=======
-    private $enabled;
-
-    public $version = "2.3.0";
->>>>>>> PM5
     
     protected string $confversion = "1.1.0";
 
