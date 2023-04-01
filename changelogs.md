@@ -1,3 +1,11 @@
+## 2.3.1
+
+- Applied 2.2.2-Beta Patches to PM5 branch and bumping version to 2.3.1
+
+## 2.3.0
+
+- Updated to PM5
+
 ## 2.2.2-Beta
 
 - Lag Fix
