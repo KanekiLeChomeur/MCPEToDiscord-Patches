@@ -1,5 +1,6 @@
 name: MCPEToDiscord
-author: JaxkDev
+author: - JaxkDev
+        - GamerMJay
 version: 2.3.1
 api: 5.0.0
 main: Jack\MCPEToDiscord\Main
