@@ -10,7 +10,6 @@ commands:
   mcpe:
     description: Discord commands use /mcpe help for all cmds
     permission: mcpetodiscord.use
-    usage: /mcpe help
     aliases: ["mcpetodiscord"]
 
 permissions: 
